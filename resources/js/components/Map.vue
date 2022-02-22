@@ -1,4 +1,3 @@
-
 <script>
 import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
