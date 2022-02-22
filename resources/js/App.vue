@@ -1,5 +1,30 @@
-<script setup>
-  import Map from './components/Map.vue'
+<script>
+  import ShipMap from './components/ShipMap.vue'
+
+  export default {
+    components: {
+        ShipMap,
+    },
+    data() {
+      return {
+        shipIds: [205515690, 205448890, 205367990],
+        shipData: [],
+      }
+    },
+    created() {
+      this.shipIds.forEach(shipId => {
+        this.fetchData(shipId)
+        console.log('oops')
+      });
+    },
+    methods: {
+      // Fetch vessel data
+      async fetchData(shipId) {
+        const uri = `${process.env.MIX_API_ENDPOINT}/ships/${shipId}`
+        this.shipData.push(await (await fetch(uri)).json())
+      }
+    }
+  }
 </script>
 
 <template>
@@ -8,7 +33,7 @@
   </header>
 
   <main>
-    <Map />
+    <ShipMap :ships="this.shipData"/>
   </main>
 </template>
 
