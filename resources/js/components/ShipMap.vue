@@ -1,6 +1,8 @@
 <script>
-import { LMap, LTileLayer, LMarker, LPopup, LPolyline } from "@vue-leaflet/vue-leaflet";
+import { LMap, LTileLayer, LMarker, LPopup, LPolyline, LGeoJson } from "@vue-leaflet/vue-leaflet";
 import "leaflet/dist/leaflet.css";
+import * as poaGeojson from "../../assets/PortOfAntwerp.geojson";
+import * as osmGeojson from "../../assets/OpenStreetMap.geojson";
 
 export default {
   components: {
@@ -9,6 +11,7 @@ export default {
     LMarker,
     LPopup,
     LPolyline,
+    LGeoJson,
   },
   props: {
     ships: Array,
@@ -17,6 +20,7 @@ export default {
     return {
       zoom: 11,
       center: [51.2364327, 4.4198728],
+      geojson: osmGeojson,
     };
   },
   updated() {
@@ -29,10 +33,11 @@ export default {
   <div id="map">
     <LMap :zoom="zoom" :center="center">
       <LTileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></LTileLayer>
-      <LMarker v-for="ship in this.ships" :lat-lng="[ship.latitude, ship.longitude]">
+      <LMarker v-for="ship in this.ships" :lat-lng="[ship.latitude, ship.longitude]" color="red">
         <LPopup>{{ ship.name }}</LPopup>
       </LMarker>
-      <LPolyline  :lat-lngs="this.ships.map(ship => [ship.latitude, ship.longitude])"></LPolyline>
+      <LGeoJson :geojson="geojson"></LGeoJson>
+      <LPolyline  :lat-lngs="this.ships.map(ship => [ship.latitude, ship.longitude])" color="red"></LPolyline>
     </LMap>
   </div>
 </template>
